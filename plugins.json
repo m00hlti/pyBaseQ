@@ -1,0 +1,16 @@
+{
+    "ts3" : 
+    {
+        "name" : "TS3 Backup module",
+        "folder" : "/tmp"
+
+    },
+    "mysql" :
+    {
+        "name" : "Mysql Backup module",
+        "ip" : "localhost",
+        "port" : "3306",
+        "user" : "backupuser",
+        "password" : "backuppw"
+    }
+}
