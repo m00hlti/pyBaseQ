@@ -6,15 +6,15 @@ x = {
         [   
             {
                 "type": "filecopy",
-                "source": "C:\\Temp\\foobar.txt",
-                "dest": "C:\\Temp\\newfolder\\",
+                "source": ["/tmp/foobar", "/tmp/foo", "/tmp/bar"],
+                "dest": "/tmp/testfolder/",
             },
 
-            {
-                "type": "filemove",
-                "source": "C:\\Temp\\foo.txt",
-                "dest": "C:\\Temp\\newfolder\\",
-            },
+            # {
+            #     "type": "filemove",
+            #     "source": "/tmp/foo",
+            #     "dest": "/tmp/testfolder/",
+            # },
 
             {
                 "type": "bashcall",
@@ -22,30 +22,30 @@ x = {
                 "args": "-l",
             },
 
-            {
-                "type": "bashcall",
-                "path": "/usr/bin",
-                "cmd": "foobar",                 
-            },
+            # {
+            #     "type": "bashcall",
+            #     "path": "/usr/bin",
+            #     "cmd": "foobar",                 
+            # },
 
-            {
-                "type": "scpcopy",
-                "user": "m00hlti",
-                "password": "booh",
-                "destpc": "kirsch.limo",
-                "dest": "C:\\Temp\\newfolder\\",                
-                "source": "C:\\Temp\\foo.txt",
+            # {
+            #     "type": "scpcopy",
+            #     "user": "m00hlti",
+            #     "password": "booh",
+            #     "destpc": "kirsch.limo",
+            #     "dest": "C:\\Temp\\newfolder\\",                
+            #     "source": "C:\\Temp\\foo.txt",
                 
-            },
+            # },
             
-            {
-                "type": "scpcopy",
-                "user": "m00hlti",
-                "password": "booh",
-                "sourcepc": "kirsch.limo",
-                "source": "C:\\Temp\\foobar.txt",
-                "dest": "C:\\Temp\\newfolder\\",
-            },
+            # {
+            #     "type": "scpcopy",
+            #     "user": "m00hlti",
+            #     "password": "booh",
+            #     "sourcepc": "kirsch.limo",
+            #     "source": "C:\\Temp\\foobar.txt",
+            #     "dest": "C:\\Temp\\newfolder\\",
+            # },
 
         ]
     }
