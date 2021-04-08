@@ -224,7 +224,8 @@ class sequencer_step_bashcall(sequencer_step_base):
 
         if "args" in config:
             self.hasarg = True
-            self.arg.append(config["args"])
+            for arg in config["args"]:
+                self.arg.append(arg)
         
         if "path" in config:
             self.haspath = True
@@ -232,16 +233,27 @@ class sequencer_step_bashcall(sequencer_step_base):
         
         self.cmd = config["cmd"]
 
+
     def run(self):
-        pass
-        #bashCommand = ""#  "cwm --rdf test.rdf --ntriples > test.nt"
-        #if self.haspath == True:
-        #    bashCommand += self.path
+        '''
+        TODO: This needs a lot of loooooove 
+        '''
         
+        usepath = ""
+        bashCommand = []
+
+        if self.haspath:
+            usepath = self.path
+        else:
+            import os
+            usepath = os.getcwd()           
         #bashCommand += self.cmd
 
-        #if self.hasarg == True:
-        #    for 
+        bashCommand.append(self.cmd)
 
-        #process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
-        #output, error = process.communicate()
+        if self.hasarg:
+            for arg in self.arg:                
+                bashCommand.append(arg)
+        
+        output = subprocess.run(bashCommand,check=True, stdout=subprocess.PIPE, universal_newlines=True, cwd=usepath)
+        logging.info(output)

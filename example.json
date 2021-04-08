@@ -1,0 +1,52 @@
+
+{
+    "sequence": 
+    [   
+        {
+            "type": "bashcall",
+            "path": "/tmp",
+            "cmd": "ls",             
+            "args": ["-l"]
+        }
+    ],
+
+    "inactive" :
+    [
+        {
+            "type": "filecopy",
+            "source": ["/tmp/foobar", "/tmp/foo", "/tmp/bar"],
+            "dest": "/tmp/testfolder/"
+        },
+
+        {
+            "type": "filemove",
+            "source": "/tmp/foo",
+            "dest": "/tmp/testfolder/"
+        },
+
+        {
+            "type": "bashcall",
+            "path": "/usr/bin",
+            "cmd": "foobar"                 
+        },
+
+        {
+            "type": "scpcopy",
+            "user": "m00hlti",
+            "password": "booh",
+            "destpc": "kirsch.limo",
+            "dest": "C:\\Temp\\newfolder\\",                
+            "source": "C:\\Temp\\foo.txt"           
+        },
+                
+        {
+            "type": "scpcopy",
+            "user": "m00hlti",
+            "password": "booh",
+            "sourcepc": "kirsch.limo",
+            "source": "C:\\Temp\\foobar.txt",
+            "dest": "C:\\Temp\\newfolder\\"
+        }
+    
+    ]
+}

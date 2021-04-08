@@ -5,8 +5,20 @@ import json
 # THIS IS THE SEQUIENCER !!!! 11 elf
 
 
-def sequencer_loadconfigfromfile(file):
-    pass
+def sequencer_loadconfigfromfile(infile):
+    '''
+    Load config from file. 
+    '''
+    config = None
+    composedsequence = []
+
+    with open(infile) as file:
+        config = json.load(file)
+
+    if config is not None:
+        composedsequence = sequencer_loadconfig(config)
+
+    return composedsequence
 
 def sequencer_loadconfig(config):
     '''
@@ -31,15 +43,13 @@ def sequencer_loadconfig(config):
         elif currseq["type"]== "scpcopy":
             logging.info("Add a scpcopy step.")
             step = steps.sequencer_step_scpcopy()
-        
-        # elif rsync
-
-        # elif mysql/mariadb/postgresql
 
         else:
             logging.warning("Could not find type: " + currseq["type"])
 
         
+        # elif rsync
+        # elif mysql/mariadb/postgresqlK        
 
         step.loadconfig(currseq)        
         step.prerun()        
