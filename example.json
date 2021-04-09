@@ -1,17 +1,24 @@
 
 {
     "sequence": 
-    [   
+    [
+        {
+            "type": "filecopy",
+            "source": ["/tmp/foobar", "/tmp/foo", "/tmp/bar"],
+            "dest": "/tmp/testfolder/"
+        }
+
+    ],
+
+    "inactive" :
+    [
         {
             "type": "bashcall",
             "path": "/tmp",
             "cmd": "ls",             
             "args": ["-l"]
-        }
-    ],
+        }, 
 
-    "inactive" :
-    [
         {
             "type": "filecopy",
             "source": ["/tmp/foobar", "/tmp/foo", "/tmp/bar"],
@@ -34,18 +41,18 @@
             "type": "scpcopy",
             "user": "m00hlti",
             "password": "booh",
-            "destpc": "kirsch.limo",
-            "dest": "C:\\Temp\\newfolder\\",                
-            "source": "C:\\Temp\\foo.txt"           
+            "destpc": "example.org",
+            "dest": "/tmp",
+            "source": "/tmp/foo.txt"
         },
                 
         {
             "type": "scpcopy",
             "user": "m00hlti",
             "password": "booh",
-            "sourcepc": "kirsch.limo",
-            "source": "C:\\Temp\\foobar.txt",
-            "dest": "C:\\Temp\\newfolder\\"
+            "sourcepc": "example.org",
+            "dest": "/tmp",
+            "source": "/tmp/foo.txt"
         }
     
     ]

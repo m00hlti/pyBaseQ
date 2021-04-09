@@ -67,5 +67,3 @@ def sequencer_run(sequence):
         step.run()
         step.postrun()
 
-
-

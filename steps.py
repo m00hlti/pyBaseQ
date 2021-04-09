@@ -2,8 +2,8 @@ import logging
 import os
 import shutil
 import subprocess
-# import paramiko
-# from scp import SCPClient
+import paramiko
+from scp import SCPClient
 
 
 class sequencer_step_base():    
@@ -129,6 +129,9 @@ class sequencer_step_filemove(sequencer_step_base):
 
 
 class sequencer_step_scpcopy(sequencer_step_base):
+    '''
+    TODO: This needs a lot of loooooove 
+    '''
     destfolder = ""
     sourcefiles = []
 
@@ -147,12 +150,26 @@ class sequencer_step_scpcopy(sequencer_step_base):
         super().__init__()
 
 
+    def createSSHClient(self, server, port, user, password):
+        client = paramiko.SSHClient()
+        client.load_system_host_keys()
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        client.connect(server, port, user, password)
+        return client
+
+
     def loadconfig(self, config):
         '''
         load all values from the JSON file to configure the module
         '''
         if "name" in config:
             self._setName(config["name"])
+
+        if "user" in config:
+            self.user = config["user"]
+
+        if "password" in config:
+            self.password = config["password"]
 
         self.destfolder = config["dest"]
         self.sourcefiles.append(config["source"])
@@ -167,40 +184,35 @@ class sequencer_step_scpcopy(sequencer_step_base):
 
         self.valid = self.remotedest == self.remotesrc
 
-    def prerun(self):
-         client = paramiko.SSHClient()
-         client.load_system_host_keys()
-         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-
-    #def 
-    #     client.connect(server, port, user, password)
-    #     return client
-
-    # ssh = createSSHClient(server, port, user, password)
-    # scp = SCPClient(ssh.get_transport())
-
-            #     {
-            #     "type": "scpcopy",
-            #     "user": "m00hlti",
-            #     "password": "booh";
-            #     "destpc": "kirsch.limo",
-            #     "dest": "C:\\Temp\\newfolder\\",                
-            #     "source": "C:\\Temp\\foo.txt",
+    def run(self):
+        '''
+        Copy files to or from a remote location.
+        '''
+        serveraddress = ""
                 
-            # },
-            
-            # {
-            #     "type": "scpcopy",
-            #     "user": "m00hlti",
-            #     "password": "booh";
-            #     "sourcepc": "kirsch.limo",
-            #     "source": "C:\\Temp\\foobar.txt",
-            #     "dest": "C:\\Temp\\newfolder\\",
-            #}
+        if self.user is None:
+            logging.warning("No User defined.")
+            return
 
+        if self.password is None:
+            logging.warning("No Password defined.")
+            return
 
+        if self.remoteaddr is None:
+            logging.warning("No remote server defined.")
+            return
 
+        ssh = self.createSSHClient(self.remoteaddr, 22, self.user, self.password)
+        scp = SCPClient(ssh.get_transport())
 
+        if self.remotedest:
+            for currentfile in self.sourcefiles:
+                scp.put(currentfile, self.destfolder)
+        elif self.remotesrc:
+            for currentfile in self.sourcefiles:
+                scp.get(currentfile, self.destfolder)      
+
+        scp.close() 
 
 
 class sequencer_step_bashcall(sequencer_step_base):
