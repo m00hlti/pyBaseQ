@@ -6,7 +6,16 @@
             "type": "filecopy",
             "source": ["/tmp/foobar", "/tmp/foo", "/tmp/bar"],
             "dest": "/tmp/testfolder/"
-        }
+        },
+
+        {
+            "type": "mysql",
+            "user": "m00hlti",
+            "password": "booh",
+            "server": "localhost",
+            "port": "3306",
+            "cmds": ["DROP TABLE 'student';"]
+        }  
 
     ],
 
@@ -53,7 +62,15 @@
             "sourcepc": "example.org",
             "dest": "/tmp",
             "source": "/tmp/foo.txt"
-        }
-    
+        },
+
+        {
+            "type": "mysql",
+            "user": "m00hlti",
+            "password": "booh",
+            "server": "localhost",
+            "port": "3306",
+            "cmds": ["DROP TABLE 'student';"]
+        }    
     ]
 }

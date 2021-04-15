@@ -4,6 +4,7 @@ import shutil
 import subprocess
 import paramiko
 from scp import SCPClient
+import mysql.connector
 
 
 class sequencer_step_base():    
@@ -269,3 +270,79 @@ class sequencer_step_bashcall(sequencer_step_base):
         
         output = subprocess.run(bashCommand,check=True, stdout=subprocess.PIPE, universal_newlines=True, cwd=usepath)
         logging.info(output)
+
+
+
+class sequencer_step_mysql(sequencer_step_base):
+    hasdatabase = False
+    cmds = []
+
+    def __init__(self):
+        super().__init__()
+
+        # {
+        #     "type": "mysql",
+        #     "user": "m00hlti",
+        #     "password": "booh",
+        #     "server": "localhost",
+        #     "database": "oofra",
+        #     "port": "3306",
+        #     "cmds": ["DROP TABLE 'student';"]
+        # }   
+        
+
+    def loadconfig(self, config):
+        '''
+        load all values from the JSON file to configure the module
+        '''
+        if "name" in config:
+            self._setName(config["name"])
+
+        if "user" in config:
+            self.user = config["user"]
+
+        if "password" in config:
+            self.password = config["password"]
+        
+        if "server" in config:            
+            self.server = config["server"]
+        else:
+            self.server = "localhost"
+        
+        if "port" in config:            
+            self.port = config["port"]
+        else:
+            self.port = "3306"
+
+        if "database" in config:
+            self.hasdatabase = True
+            self.database = config["database"]
+
+        if "cmds" in config:
+            for cmd in config["cmds"]:
+                self.cmds.append(cmd)
+
+        
+
+    def run(self):
+        '''
+        Copy files to or from a remote location.
+        '''
+        if self.hasdatabase == False:
+            mydb = mysql.connector.connect(
+                host=self.server,
+                user=self.user,
+                password=self.password
+            )
+
+        else:
+            mydb = mysql.connector.connect(
+                host=self.server,
+                user=self.user,
+                password=self.password,
+                database=self.database
+            ) 
+
+        mycursor = mydb.cursor()
+        for cmd in self.cmds:
+            mycursor.execute(cmd)

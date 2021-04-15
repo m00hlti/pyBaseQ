@@ -43,17 +43,23 @@ def sequencer_loadconfig(config):
         elif currseq["type"]== "scpcopy":
             logging.info("Add a scpcopy step.")
             step = steps.sequencer_step_scpcopy()
+        
+        elif currseq["type"]== "mysql":
+            logging.info("Add a sql step.")
+            step = steps.sequencer_step_mysql()
 
         else:
             logging.warning("Could not find type: " + currseq["type"])
 
         
         # elif rsync
-        # elif mysql/mariadb/postgresqlK        
 
-        step.loadconfig(currseq)        
-        step.prerun()        
-        composedsequence.append(step)
+        if step is None:
+            logging.error("There is no step with type: " + currseq["type"])
+        else:
+            step.loadconfig(currseq)        
+            step.prerun()        
+            composedsequence.append(step)
 
     return composedsequence
 
